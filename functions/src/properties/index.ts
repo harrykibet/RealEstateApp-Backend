@@ -1,1 +1,1 @@
-export * from "./properties";
+// Property functions will be exported here

@@ -1,54 +1,49 @@
-import { onRequest } from "firebase-functions/v2/https";
+import { onCall } from "firebase-functions/v2/https";
 import { SecretService } from "./secretService";
 
 
 const secretService = new SecretService();
 
 
-export const getSecret = onRequest(
-    {
-        enforceAppCheck: true,
-    },
-    async (request, response) => {
+export const getSecret = onCall(
+{
+    enforceAppCheck:true
+},
+async(request)=>{
 
-        const secretId = request.query.secretId;
-
-
-        if (
-            typeof secretId !== "string" ||
-            secretId.trim().length === 0
-        ) {
-            response
-                .status(400)
-                .send("Missing secretId parameter.");
-
-            return;
-        }
+    const secretId = request.data.secretId;
 
 
-        try {
-
-            const secret =
-                await secretService.getSecret(secretId);
-
-
-            response
-                .status(200)
-                .send(secret);
-
-        } catch (error) {
-
-            console.error(
-                "Failed to retrieve secret",
-                error
-            );
-
-
-            response
-                .status(500)
-                .send(
-                    "Failed to retrieve secret."
-                );
-        }
+    if(
+        typeof secretId !== "string" ||
+        secretId.trim().length === 0
+    ){
+        throw new Error(
+            "Missing secretId"
+        );
     }
-);
+
+
+    try {
+
+        const secret =
+            await secretService.getSecret(secretId);
+
+
+        return {
+            value: secret
+        };
+
+
+    } catch(error){
+
+        console.error(
+            "Secret retrieval failed",
+            error
+        );
+
+        throw new Error(
+            "Unable to retrieve secret"
+        );
+    }
+});

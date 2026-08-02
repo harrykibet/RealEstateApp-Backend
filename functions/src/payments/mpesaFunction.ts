@@ -1,7 +1,6 @@
 import {
-    onRequest
+ onCall
 } from "firebase-functions/v2/https";
-
 
 import {
     MpesaService
@@ -19,42 +18,21 @@ const service =
         new MpesaClient()
     );
 
-
-
 export const initiateMpesaPayment =
-    onRequest(
-        {
-            enforceAppCheck:true
-        },
-        async(req,res)=>{
+onCall(
+{
+    enforceAppCheck:true
+},
+async(request)=>{
 
 
-        try {
+const paymentRequest =
+    request.data;
 
 
-            const result =
-                await service.createPayment(
-                    req.body
-                );
+return await service.createPayment(
+    paymentRequest
+);
 
 
-            res.status(200)
-                .json(result);
-
-
-
-        } catch(error){
-
-
-            console.error(error);
-
-
-            res.status(500)
-                .json({
-                    message:
-                    "Payment initiation failed"
-                });
-
-        }
-
-    });
+});
