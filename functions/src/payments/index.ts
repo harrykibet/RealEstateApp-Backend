@@ -1,4 +1,1 @@
-export {
-    initiateMpesaPayment
-}
-from "./mpesaFunction";
+export {initiateMpesaPayment} from "./mpesaFunction";

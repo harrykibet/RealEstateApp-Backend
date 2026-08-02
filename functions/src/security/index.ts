@@ -1,3 +1,1 @@
-export {
-    getSecret
-} from "./secretManager";
+export {getSecret} from "./secretManager";
