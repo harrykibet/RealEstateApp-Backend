@@ -1,0 +1,4 @@
+export {
+    initiateMpesaPayment
+}
+from "./mpesaFunction";
